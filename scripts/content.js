@@ -1,20 +1,28 @@
-const submit = document.querySelector(".submit")
-function fun(){
-  console.log("id caught");
-}
-if (submit) {
-  submit.addEventListener('click', fun);
-}
+let btn;
 
-// https://www.codechef.com/api/ide/submit?solution_id=1089386436
+window.addEventListener(
+  "load",
+  function () {
+    let bodyText = document.body.innerText;
+    btn = document.getElementById("submit_btn");
+    this.setTimeout(() => {
+      chrome.runtime.sendMessage({
+        action: "receiveBodyText",
+        bodyText: bodyText,
+      });
+    }, 1000);
+  },
+  false
+);
 
-// {
-//   "upid": "1089385639",
-//   "result_code": "wait",
-//   "result_description": "",
-//   "signal": null,
-//   "show_status_table": "yes",
-//   "error_link": null,
-//   "time": "0.00",
-//   "score": null
-// }
+chrome.runtime.onMessage.addListener((message) => {
+  chrome.runtime.sendMessage("", {
+    type: "notification",
+    options: {
+      title: "Hello CodeChefer",
+      message: `Submission of problem ${message?.problemId} is ${message?.resultCode}`,
+      iconUrl: "./images/codechef_thumbnail.jpg",
+      type: "basic",
+    },
+  });
+});
