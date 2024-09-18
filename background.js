@@ -1,5 +1,5 @@
 const targetPattern = "*://www.codechef.com/api/ide/submit*";
-
+let questionName
 const extractSolutionID = (url) => {
   let num = "";
   for (const char of url) {
@@ -44,6 +44,7 @@ function fetchResult(solutionId) {
         console.log(`Result code: ${data.result_code}`);
         if (data.result_code !== "wait") {
           console.log(`Successfully retrieved result: ${data.result_code}`);
+          chrome.storage.local.set({[solutionId]:data.result_code},()=>{})
           notifyUser(data);
           clearInterval(setIntervalId);
           fetchResult.inProgress = false; // Reset flag after completion
@@ -57,7 +58,7 @@ function fetchResult(solutionId) {
 }
 
 function notifyUser(data) {
-  const title = 'Fetch Result Notification';
+  const title = `${questionName} Result`;
   const message = `Result: ${data.result_code || 'No result available'}`;
 
   chrome.notifications.create({
@@ -70,3 +71,13 @@ function notifyUser(data) {
     console.log(`Notification sent with ID: ${notificationId}`);
   });
 }
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log("Message received:", request);
+  if (request.message === "Question Name") {
+    console.log(request.data)
+    questionName = request.data
+  }
+});
+
+chrome.storage.local.clear(()=>{})
