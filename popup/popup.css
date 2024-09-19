@@ -1,0 +1,12 @@
+body{
+  width: max-content;
+  color: black;
+  padding: 2px;
+}
+.qList{
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+  column-gap: 40px;
+  /* justify-content: space-evenly; */
+}

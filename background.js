@@ -1,5 +1,6 @@
 const targetPattern = "*://www.codechef.com/api/ide/submit*";
-let questionName
+let questionName = "Question's Name"
+
 const extractSolutionID = (url) => {
   let num = "";
   for (const char of url) {
@@ -11,15 +12,19 @@ const extractSolutionID = (url) => {
 const handleRequest = (details) => {
   if (details.url.startsWith("https://www.codechef.com/api/ide/submit?")) {
     const solutionId = extractSolutionID(details.url);
-    console.log("got this time", solutionId); // Log the solutionId
+    console.log("got this time", solutionId); 
 
     if (solutionId) {
       chrome.storage.local.get([solutionId],(res)=>{
         let result=res[solutionId]
         if(!result){
-          chrome.storage.local.set({ [solutionId]: "Result Not Found" });
+          let questionDetails = {
+            name : questionName,
+            result : "Result Not Found"
+          }
+          chrome.storage.local.set({ [solutionId]: questionDetails });
           if (!fetchResult.inProgress) {
-            fetchResult.inProgress = true; // Set flag to indicate fetching is in progress
+            fetchResult.inProgress = true; 
             fetchResult(solutionId);
           }
         }
@@ -44,15 +49,19 @@ function fetchResult(solutionId) {
         console.log(`Result code: ${data.result_code}`);
         if (data.result_code !== "wait") {
           console.log(`Successfully retrieved result: ${data.result_code}`);
-          chrome.storage.local.set({[solutionId]:data.result_code},()=>{})
+          let questionDetails = {
+            name : questionName,
+            result : data.result_code
+          }
+          chrome.storage.local.set({[solutionId]:questionDetails})
           notifyUser(data);
           clearInterval(setIntervalId);
-          fetchResult.inProgress = false; // Reset flag after completion
+          fetchResult.inProgress = false; 
         }
       })
       .catch(error => {
         console.error("Error while fetching data", error);
-        fetchResult.inProgress = false; // Reset flag on error
+        fetchResult.inProgress = false; 
       });
   }, 2000);
 }
@@ -63,7 +72,7 @@ function notifyUser(data) {
 
   chrome.notifications.create({
     type: 'basic',
-    iconUrl: 'icon.png',
+    iconUrl: 'images/notificationIcon.png',
     title: title,
     message: message,
     priority: 2,
@@ -79,5 +88,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     questionName = request.data
   }
 });
-
-chrome.storage.local.clear(()=>{})
