@@ -9,6 +9,18 @@ const extractSolutionID = (url) => {
   return num;
 }
 
+const extractQuestionName = (title) => {
+  const titleArray = title.split(' ');
+  const index = titleArray.indexOf("Practice");
+  if(index==-1) return
+  let qsName = "";
+  for(let i=0;i<index;i++) {
+    qsName+=titleArray[i]
+    qsName+=" "
+  }
+  questionName = qsName
+}
+
 const handleRequest = (details) => {
   if (details.url.startsWith("https://www.codechef.com/api/ide/submit?")) {
     const solutionId = extractSolutionID(details.url);
@@ -81,10 +93,20 @@ function notifyUser(data) {
   });
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Message received:", request);
-  if (request.message === "Question Name") {
-    console.log(request.data)
-    questionName = request.data
+
+const handleTab = (tabId) => {
+  chrome.tabs.get(tabId, (tab) => {
+    extractQuestionName(tab.title);
+  });
+}
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  const tabId = activeInfo.tabId;
+  handleTab(tabId);
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    handleTab(tabId);
   }
 });
