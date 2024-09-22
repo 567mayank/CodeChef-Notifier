@@ -94,8 +94,12 @@ function notifyUser(data) {
 }
 
 
+let freezeMode = false;
+
 const handleTab = (tabId) => {
+  if (freezeMode) return;
   chrome.tabs.get(tabId, (tab) => {
+    qsUrl = tab.url
     extractQuestionName(tab.title);
   });
 }
@@ -110,3 +114,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     handleTab(tabId);
   }
 });
+
+
+const activateFreezeMode = (duration) => {
+  freezeMode = true;
+  setTimeout(() => {
+    freezeMode = false; 
+  }, duration);
+};
