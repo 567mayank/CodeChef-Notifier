@@ -1,6 +1,10 @@
 const targetPattern = "*://www.codechef.com/api/ide/submit*";
-let questionName = "Question's Name"
 
+let questionName = "Question's Name"
+let qsUrl = "https://www.codechef.com"
+let freezeMode = false;
+
+// for exttracting solution id
 const extractSolutionID = (url) => {
   let num = "";
   for (const char of url) {
@@ -9,6 +13,7 @@ const extractSolutionID = (url) => {
   return num;
 }
 
+// for extracting question name
 const extractQuestionName = (title) => {
   const titleArray = title.split(' ');
   const index = titleArray.indexOf("Practice");
@@ -22,6 +27,7 @@ const extractQuestionName = (title) => {
 }
 
 const handleRequest = (details) => {
+  activateFreezeMode(3000)
   if (details.url.startsWith("https://www.codechef.com/api/ide/submit?")) {
     const solutionId = extractSolutionID(details.url);
     console.log("got this time", solutionId); 
@@ -32,16 +38,16 @@ const handleRequest = (details) => {
         if(!result){
           let questionDetails = {
             name : questionName,
-            result : "Result Not Found"
+            result : "Result Not Found",
+            url:qsUrl
           }
-          chrome.storage.local.set({ [solutionId]: questionDetails });
-          if (!fetchResult.inProgress) {
-            fetchResult.inProgress = true; 
-            fetchResult(solutionId);
-          }
+          chrome.storage.local.set({ [solutionId]: questionDetails },()=>{
+            qsSubmitted()
+          });
         }
-      })      
+      }) 
     }
+    
   }
 };
 
@@ -51,51 +57,65 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   ["requestHeaders"]
 );
 
-let setIntervalId;
-
-function fetchResult(solutionId) {
-  setIntervalId = setInterval(() => {
-    fetch(`https://www.codechef.com/api/ide/submit?solution_id=${solutionId}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(`Result code: ${data.result_code}`);
-        if (data.result_code !== "wait") {
-          console.log(`Successfully retrieved result: ${data.result_code}`);
-          let questionDetails = {
-            name : questionName,
-            result : data.result_code
-          }
-          chrome.storage.local.set({[solutionId]:questionDetails})
-          notifyUser(data);
-          clearInterval(setIntervalId);
-          fetchResult.inProgress = false; 
+const qsSubmitted = () => {
+  chrome.storage.local.get(null,res=>{
+    let key = Object.keys(res)
+    key.forEach((val)=>{
+      if(res[val].result==="Result Not Found"){
+        let setIntervalId = setInterval(() => {
+            fetch(`https://www.codechef.com/api/ide/submit?solution_id=${val}`)
+              .then(response => response.json())
+              .then(data => {
+                console.log(`Result code: ${data.result_code}`);
+                if (data.result_code !== "wait") {
+                  console.log(`Successfully retrieved result: ${data.result_code}`);
+                  let questionDetails = {
+                    name : res[val].name,
+                    result : data.result_code,
+                    url:res[val].url
+                  }
+                  chrome.storage.local.set({[val]:questionDetails},()=>notifyUser(val))
+                  clearInterval(setIntervalId);
+                }
+              })
+              .catch(error => {
+                console.error("Error while fetching data", error);
+                fetchResult.inProgress = false; 
+              });
+          }, 2000);
         }
       })
-      .catch(error => {
-        console.error("Error while fetching data", error);
-        fetchResult.inProgress = false; 
-      });
-  }, 2000);
+    })
 }
 
-function notifyUser(data) {
-  const title = `${questionName} Result`;
-  const message = `Result: ${data.result_code || 'No result available'}`;
-
-  chrome.notifications.create({
-    type: 'basic',
-    iconUrl: 'images/notificationIcon.png',
-    title: title,
-    message: message,
-    priority: 2,
-  }, (notificationId) => {
-    console.log(`Notification sent with ID: ${notificationId}`);
-  });
+// notification code implemented
+notifyUser = (solutionId) => {
+  chrome.storage.local.get(solutionId,(res)=>{
+    const title = `${res[solutionId].name} Result`;
+    const message = `Result: ${res[solutionId].result || 'No result available'}`;
+  
+    chrome.notifications.create(solutionId,{
+      type: 'basic',
+      iconUrl: 'images/notificationIcon.png',
+      title: title,
+      message: message,
+      priority: 2,
+    }, (notificationId) => {
+      console.log(`Notification sent with ID: ${notificationId}`);
+    });
+  })
 }
 
+chrome.notifications.onClicked.addListener((notificationId) => {
+  chrome.storage.local.get(notificationId,(res)=>{
+    console.log(res[notificationId].url)
+    chrome.tabs.create({ url: res[notificationId].url }); 
+    chrome.notifications.clear(notificationId);
+  })
+});
 
-let freezeMode = false;
 
+// retreiving tab details
 const handleTab = (tabId) => {
   if (freezeMode) return;
   chrome.tabs.get(tabId, (tab) => {
@@ -115,7 +135,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
-
+// implemented freeze mode
 const activateFreezeMode = (duration) => {
   freezeMode = true;
   setTimeout(() => {
