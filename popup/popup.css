@@ -95,3 +95,42 @@ div.subHeading {
   text-align: center;      
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
+
+
+footer {
+  margin-top: 10px;
+  display: flex; 
+  justify-content: space-evenly; 
+  align-items: center; 
+}
+
+.gitHub a {
+  text-decoration: none; 
+  color: white; 
+  font-size: larger; 
+}
+
+.gitHub a:hover {
+  text-decoration: underline;
+}
+
+.settings{
+  display: flex;
+  justify-content: space-evenly; 
+  align-items: center; 
+}
+
+.settings a {
+  text-decoration: none; 
+  color: white; 
+  font-size: larger; 
+}
+
+.settings img {
+  width: 24px;  
+  margin-right: 8px; 
+}
+
+.settings a:hover {
+  text-decoration: underline;
+}
