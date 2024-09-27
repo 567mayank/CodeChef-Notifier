@@ -1,29 +1,32 @@
-body.dark{
+body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px 25px;
+  width: 240px;
+  transition: background-color 1s, color 0.3s;
+}
+
+body.dark {
   background-color: #110f0f;
-  margin: 0;
   color: white;
-  padding: 20px 25px 20px 25px;
-  width: 240px;
 }
-body.light{
-  font-family: Arial, sans-serif;
-  background-color: white;
-  margin: 0;
-  color: #110f0f;
-  padding: 20px 25px 20px 25px;
-  width: 240px;
+
+body.light {
+  background-color: #ffffff;
+  color: #000000;
 }
-header{
+
+header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  /* margin-bottom: 15px; */
 }
-header img{
+
+header img {
   height: 15px;
 }
-header div{
+
+header div {
   padding-left: 17px;
   font-size: x-large;
 }
@@ -31,51 +34,54 @@ header div{
 main {
   display: flex;
   flex-direction: column;
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 .mode {
   display: flex;
   justify-content: flex-start;
   column-gap: 30px;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
-.mode div.dark {
+.mode div {
   border: 1px solid white;
   border-radius: 5px;
   padding: 5px 15px;
   font-size: larger;
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.mode div.light {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 5px 15px;
-  font-size: larger;
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+body.dark .mode div {
+  border-color: white;
+}
+
+body.light .mode div {
+  border-color: #000000;
 }
 
 .mode div:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+body.light .mode div:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .notifications {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 13px; 
+  margin-bottom: 13px;
 }
 
 .notifications div {
-  margin-right: 10px; 
-  font-size: larger; 
+  margin-right: 10px;
+  font-size: larger;
 }
 
-.heading{
+.heading {
   font-size: larger;
   margin-bottom: 5px;
 }
@@ -83,27 +89,30 @@ main {
 .submission {
   display: flex;
   align-items: center;
-  column-gap: 17px; 
+  column-gap: 17px;
 }
 
-.submission div.dark {
+.submission div {
   border: 1px solid white;
   border-radius: 5px;
   padding: 5px 20px;
   font-size: larger;
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
 }
-.submission div.light {
-  /* color: white; */
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 5px 20px;
-  font-size: larger;
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+
+body.dark .submission div {
+  border-color: white;
+}
+
+body.light .submission div {
+  border-color: #000000;
 }
 
 .submission div:hover {
-  background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.light .submission div:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }

@@ -6,6 +6,25 @@ const addElement = (className ="",innerText="",parent="",type="div") => {
   return div
 }
 
+const modeSwitched = () =>{
+  chrome.storage.local.get("mode",(res)=>{    
+    if(res["mode"]==="dark") {
+      document.getElementById('settingsIcon').src = "/images/settingWhite.png"
+      document.getElementById('settingsIcon2').src = "/images/githubWhite.png"
+    }
+    else {
+      document.getElementById('settingsIcon').src = "/images/settingBlack.png"
+      document.getElementById('settingsIcon2').src = "/images/githubBlack.png"
+    }
+    Array.from(document.querySelectorAll(".modeUpdatation")).forEach((val)=>{
+      val.classList.remove("light")
+      val.classList.remove("dark")
+      val.classList.add(res["mode"])
+    })
+  })
+}
+
+
 const styleUpdate = (result,div) => {
   if(result.toUpperCase()==="ACCEPTED"){
     div.style.color="green"
@@ -62,8 +81,6 @@ chrome.tabs.query({ active: true }, (tabs) => {
       if(res["submissions"]==="ten") lastSub=10
       if(res["submissions"]==="fifteen") lastSub=15
       lastSub--;
-      console.log(lastSub) 
-      console.log(len)
       if(len===0) {
         updateUI()
         return
@@ -71,7 +88,7 @@ chrome.tabs.query({ active: true }, (tabs) => {
 
       const subHeading = addElement("subHeading","",qs)
       addElement("","Recent Submissions",subHeading) 
-      memoryCleanerManually(addElement("btn","Clear",subHeading,"button"),keys,len)
+      memoryCleanerManually(addElement(`btn ${res["mode"]}`,"Clear",subHeading,"button"),keys,len)
       let i=len-1;
       while(i>=0&&lastSub>=0){
         if (!isNaN(Number(keys[i]))) {
@@ -89,9 +106,16 @@ chrome.tabs.query({ active: true }, (tabs) => {
   } 
   else {
     let qs = document.querySelector(".others")
-    addElement("otherPage","Not a CodeChef page",qs)
+    addElement("otherPage modeUpdatation","Not a CodeChef page",qs)
   }
 
 });
 
+document.querySelector(".gitHubLink").addEventListener("click",()=>{
+  window.open("https://github.com/567mayank/CodeChef-Notifier", "_blank");
+})
+
+
+
 localStorageCleaner()
+modeSwitched()

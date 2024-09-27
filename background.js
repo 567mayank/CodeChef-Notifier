@@ -4,6 +4,15 @@ let questionName = "Question's Name"
 let qsUrl = "https://www.codechef.com"
 let freezeMode = false;
 
+// starting extension
+const getStarted = () => {
+  chrome.storage.local.set({
+    "mode":"dark",
+    "notifications":true,
+    "submissions":"five"
+  },()=>console.log("Started Extension!!!"))
+}
+
 // for exttracting solution id
 const extractSolutionID = (url) => {
   let num = "";
@@ -91,13 +100,13 @@ const qsSubmitted = () => {
 // notification code implemented
 notifyUser = (solutionId) => {
   chrome.storage.local.get(null,(res)=>{
-    if(res["notifications"]){
+    if(!(res.hasOwnProperty("notifications"))||res["notifications"]){
       const title = `${res[solutionId].name} Result`;
       const message = `Result: ${res[solutionId].result || 'No result available'}`;
     
       chrome.notifications.create(solutionId,{
         type: 'basic',
-        iconUrl: 'images/notificationIcon.png',
+        iconUrl: 'images/icon48.png',
         title: title,
         message: message,
         priority: 2,
@@ -144,3 +153,7 @@ const activateFreezeMode = (duration) => {
     freezeMode = false; 
   }, duration);
 };
+
+
+
+getStarted()

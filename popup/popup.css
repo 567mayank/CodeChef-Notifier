@@ -1,10 +1,18 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #110f0f;
   margin: 0;
-  color: white;
-  padding: 20px 25px 20px 25px;
+  padding: 20px 25px;
   width: 240px;
+}
+
+body.light {
+  background-color: white;
+  color: #110f0f;
+}
+
+body.dark {
+  background-color: #110f0f;
+  color: white;
 }
 
 h1 {
@@ -12,45 +20,80 @@ h1 {
   margin: 0 0 15px 0;
 }
 
-.subHeading{
+h1.light {
+  color: #110f0f;
+}
+
+h1.dark {
+  color: white;
+}
+
+.subHeading {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 5px;
 }
 
 div.subHeading {
   font-size: 14px;
   font-weight: bold;
-  color: #555; 
-  margin-bottom: 10px; 
-  text-align: center; 
+  color: #555;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.btn{
+.subHeading.light {
+  color: #555;
+}
+
+.subHeading.dark {
+  color: #ccc; 
+}
+
+.btn {
   background-color: transparent;
   border-radius: 5px;
-  border: none; 
+  border: none;
+  font-size: 12px;
   color: white;
-  font-size: 12px;   
+}
+
+.btn.light {
+  color: #110f0f; 
 }
 
 .btn:hover {
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0;
   color: black;
+}
+
+.btn:hover.light {
+  background-color: black;
+  color: #f0f0f0;
 }
 
 .qList {
   border: 1px solid #ddd;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   border-radius: 5px;
   padding: 5px;
   margin: 5px 0;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  justify-content: space-between; 
+  justify-content: space-between;
+}
+
+.qList.light {
+  background-color: white;
+  border-color: #ddd;
+}
+
+.qList.dark {
+  background-color: #222;
+  border-color: #444;
 }
 
 .qName {
@@ -59,11 +102,26 @@ div.subHeading {
   color: black;
 }
 
-.qresult {
-  font-size: 14px;
-  color: #4CAF50; 
+.qName.light {
+  color: black;
 }
 
+.qName.dark {
+  color: white;
+}
+
+.qresult {
+  font-size: 14px;
+  color: #4CAF50;
+}
+
+.qresult.light {
+  color: #4CAF50;
+}
+
+.qresult.dark {
+  color: #81C784; 
+}
 
 .qList:hover {
   background-color: #f1f1f1;
@@ -71,63 +129,92 @@ div.subHeading {
 }
 
 .noRecSub {
-  font-size: 14px;         
-  color: white;            
-  margin: 10px 0;         
-  padding: 10px;          
-  background-color: #111111; 
-  border: 1px solid #ddd;  
-  border-radius: 5px;     
-  text-align: center;      
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  font-size: 14px;
+  color: white;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #111111;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.noRecSub.light {
+  background-color: #f8f8f8; 
+  color: #110f0f;
+  border-color: #ddd;
+}
 
 .otherPage {
-  font-size: 14px;         
-  color: white;            
-  margin: 10px 0;         
-  padding: 10px;          
-  background-color: #111111; 
-  border: 1px solid #ddd;  
-  border-radius: 5px;     
-  text-align: center;      
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  font-size: 14px;
+  color: white;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #111111;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.otherPage.light {
+  background-color: #f8f8f8; 
+  color: #110f0f;
+  border-color: #ddd;
+}
 
 footer {
   margin-top: 10px;
-  display: flex; 
-  justify-content: space-evenly; 
-  align-items: center; 
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.gitHub a {
-  text-decoration: none; 
-  color: white; 
-  font-size: larger; 
+.gitHub {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.gitHub a:hover {
+.gitHub div {
+  cursor: pointer;
+  color: white;
+  font-size: larger;
+}
+
+.gitHub.light div {
+  color: #110f0f; 
+}
+
+.gitHub div:hover {
   text-decoration: underline;
 }
 
-.settings{
+.gitHub img {
+  width: 24px;
+  margin-right: 8px;
+}
+
+.settings {
   display: flex;
-  justify-content: space-evenly; 
-  align-items: center; 
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .settings a {
-  text-decoration: none; 
-  color: white; 
-  font-size: larger; 
+  text-decoration: none;
+  color: white;
+  font-size: larger;
+}
+
+.settings.light a {
+  color: #110f0f; 
 }
 
 .settings img {
-  width: 24px;  
-  margin-right: 8px; 
+  width: 24px;
+  margin-right: 8px;
 }
 
 .settings a:hover {
