@@ -90,19 +90,21 @@ const qsSubmitted = () => {
 
 // notification code implemented
 notifyUser = (solutionId) => {
-  chrome.storage.local.get(solutionId,(res)=>{
-    const title = `${res[solutionId].name} Result`;
-    const message = `Result: ${res[solutionId].result || 'No result available'}`;
-  
-    chrome.notifications.create(solutionId,{
-      type: 'basic',
-      iconUrl: 'images/notificationIcon.png',
-      title: title,
-      message: message,
-      priority: 2,
-    }, (notificationId) => {
-      console.log(`Notification sent with ID: ${notificationId}`);
-    });
+  chrome.storage.local.get(null,(res)=>{
+    if(res["notifications"]){
+      const title = `${res[solutionId].name} Result`;
+      const message = `Result: ${res[solutionId].result || 'No result available'}`;
+    
+      chrome.notifications.create(solutionId,{
+        type: 'basic',
+        iconUrl: 'images/notificationIcon.png',
+        title: title,
+        message: message,
+        priority: 2,
+      }, (notificationId) => {
+        console.log(`Notification sent with ID: ${notificationId}`);
+      });
+    }
   })
 }
 

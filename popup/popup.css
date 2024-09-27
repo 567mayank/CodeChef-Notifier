@@ -8,7 +8,6 @@ body {
 }
 
 h1 {
-  color: #fffcfc;
   text-align: center;
   margin: 0 0 15px 0;
 }
@@ -49,7 +48,7 @@ div.subHeading {
   border-radius: 5px;
   padding: 5px;
   margin: 5px 0;
-  background-color: #fff;
+  background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   justify-content: space-between; 
 }
@@ -57,7 +56,7 @@ div.subHeading {
 .qName {
   font-weight: bold;
   font-size: 16px;
-  color: #333;
+  color: black;
 }
 
 .qresult {

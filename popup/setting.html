@@ -6,13 +6,32 @@
   <title>Setting window</title>
   <link rel="stylesheet" href="setting.css">
 </head>
-<body>
+<body class="dark">
+  <script src="setting.js" async></script>
   <header>
     <a href="popup.html"> <img src="/images/back.png" alt="Back"/> </a>
     <div class="header-title">Settings</div>
   </header>
   <main>
-    
+    <div class="heading">
+        Mode:
+    </div>
+    <div class="mode">
+        <div id="dark" class="dark">Dark</div>
+        <div id="dark" class="dark">dark</div>
+    </div>
+    <div class="notifications">
+        <div>Notifications:</div>
+        <input id="checkbox" type="checkbox">
+    </div>
+    <div class="heading">
+        Total last submissions:
+    </div>
+    <div class="submission">
+        <div id="five" class="dark">5</div>
+        <div id="ten" class="dark">10</div>
+        <div id="fifteen" class="dark">15</div>
+    </div>
   </main>
 </body>
 </html>

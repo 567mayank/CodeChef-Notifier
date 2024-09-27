@@ -1,4 +1,4 @@
-body {
+body.dark{
   font-family: Arial, sans-serif;
   background-color: #110f0f;
   margin: 0;
@@ -6,4 +6,104 @@ body {
   padding: 20px 25px 20px 25px;
   width: 240px;
 }
+body.light{
+  font-family: Arial, sans-serif;
+  background-color: white;
+  margin: 0;
+  color: #110f0f;
+  padding: 20px 25px 20px 25px;
+  width: 240px;
+}
+header{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* margin-bottom: 15px; */
+}
+header img{
+  height: 15px;
+}
+header div{
+  padding-left: 17px;
+  font-size: x-large;
+}
 
+main {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px; 
+}
+
+.mode {
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 30px;
+  margin-bottom: 20px; 
+}
+
+.mode div.dark {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-size: larger;
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+
+.mode div.light {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-size: larger;
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+
+.mode div:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notifications {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 13px; 
+}
+
+.notifications div {
+  margin-right: 10px; 
+  font-size: larger; 
+}
+
+.heading{
+  font-size: larger;
+  margin-bottom: 5px;
+}
+
+.submission {
+  display: flex;
+  align-items: center;
+  column-gap: 17px; 
+}
+
+.submission div.dark {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: larger;
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+.submission div.light {
+  /* color: white; */
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: larger;
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+
+.submission div:hover {
+  background-color: rgba(255, 255, 255, 0.1); 
+}

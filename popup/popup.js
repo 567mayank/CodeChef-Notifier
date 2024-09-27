@@ -24,14 +24,30 @@ const updateUI = () => {
   addElement("noRecSub","No Submission Yet!!",qs);
 };
 
-const memoryCleaner = (btn) => {
+const memoryCleanerManually = (btn,keys,len) => {
   btn.addEventListener("click", (e) => {
-    chrome.storage.local.clear(() => {
-      updateUI(); 
-    });
+    console.log("hi")
+    for(let i=0;i<len;i++){
+      if (isNaN(Number(keys[i]))) continue;
+      chrome.storage.local.remove(keys[i])
+    }
+    updateUI();
   });
 };
 
+const localStorageCleaner = () => {
+  chrome.storage.local.get(null,res=>{
+    let keys = Object.keys(res)
+    let len = keys.length
+    if(len>18){
+      for(let i=0;i<len;i++){
+        if (isNaN(Number(keys[i]))) continue;
+        chrome.storage.local.remove(keys[i])
+        break
+      }
+    }
+  })
+}
 
 chrome.tabs.query({ active: true }, (tabs) => {
   const url = tabs[0].url;
@@ -42,7 +58,12 @@ chrome.tabs.query({ active: true }, (tabs) => {
     chrome.storage.local.get(null, (res) => {
       let keys = Object.keys(res)
       let len = keys.length
-
+      let lastSub = 5
+      if(res["submissions"]==="ten") lastSub=10
+      if(res["submissions"]==="fifteen") lastSub=15
+      lastSub--;
+      console.log(lastSub) 
+      console.log(len)
       if(len===0) {
         updateUI()
         return
@@ -50,18 +71,18 @@ chrome.tabs.query({ active: true }, (tabs) => {
 
       const subHeading = addElement("subHeading","",qs)
       addElement("","Recent Submissions",subHeading) 
-      memoryCleaner(addElement("btn","Clear",subHeading,"button"))
-
-      for (let i=len-1;i>=Math.max(0,len-5);i--) {
-        const div = addElement("qList","",qs)
-        const divChild1 = addElement("qName",res[keys[i]].name,div)
-        const divChild2 = addElement("qresult",res[keys[i]].result.toUpperCase(),div)
-        styleUpdate(res[keys[i]].result,divChild2)
-      }
-
-      // clearing other submissions
-      for(let i=0;i<Math.max(-1,len-5);i++){
-        chrome.storage.local.remove(keys[i])
+      memoryCleanerManually(addElement("btn","Clear",subHeading,"button"),keys,len)
+      let i=len-1;
+      while(i>=0&&lastSub>=0){
+        if (!isNaN(Number(keys[i]))) {
+          console.log()
+          const div = addElement("qList","",qs)
+          const divChild1 = addElement("qName",res[keys[i]].name,div)
+          const divChild2 = addElement("qresult",res[keys[i]].result.toUpperCase(),div)
+          styleUpdate(res[keys[i]].result,divChild2)
+          lastSub--;
+        }
+        i--;
       }
     
     });
@@ -72,3 +93,5 @@ chrome.tabs.query({ active: true }, (tabs) => {
   }
 
 });
+
+localStorageCleaner()
